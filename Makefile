@@ -128,6 +128,7 @@ update-settings-php:
 	docker-compose exec -T drupal with-contenv bash -lc "for_all_sites update_settings_php"
 	# Make sure the host user can read the settings.php files after they have been updated.
 	sudo find ./codebase -type f -name "settings.php" -exec chown $(shell id -u):101 {} \;
+	sudo find ./codebase -type f -name "settings.php" -exec bash -c 'echo "require_once __DIR__ . \"/flysystem_config.php\";" >> {}' \;
 
 # Updates configuration from environment variables.
 # Allow all commands to fail as the user may not have all the modules like matomo, etc.
